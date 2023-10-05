@@ -1,0 +1,51 @@
+###
+##### On Master Server 1
+###
+
+# Unique ID of the MySQL server. 
+# This ID can not be re-used in any nodes in the cluster.
+server-id = 101
+###
+# This is the file in which all the replication information is stored.
+log-bin = /var/log/mysql/mysql-bin.log
+
+	create user 'khuonght'@'%' identified by 'Bkav@2023';
+
+	alter user 'khuonght'@'%' identified with mysql_native_password by 'Bkav@2023';
+	
+	grant replication slave on *.* to 'khuonght'@'%';
+
+	flush privileges;
+	
+
+CHANGE MASTER TO MASTER_HOST='192.168.32.252',
+MASTER_USER='whoami',
+MASTER_PASSWORD='123456a@A',
+MASTER_LOG_FILE='mysql-bin.000060',
+MASTER_LOG_POS=157;
+
+
+###
+##### On Master Server 2
+###
+
+# Unique ID of the MySQL server.
+# This ID can not be re-used in any nodes in the cluster.
+server-id = 102
+###
+# This is the file in which all the replication information is stored.
+log-bin = /var/log/mysql/mysql-bin.log
+
+	create user 'whoami'@'%' identified by '123456a@A';
+
+	alter user 'whoami'@'%' identified with mysql_native_password by '123456a@A';
+	
+	grant replication slave on *.* to 'whoami'@'%';
+
+
+	
+CHANGE MASTER TO MASTER_HOST='192.168.32.251',
+MASTER_USER='whoami',
+MASTER_PASSWORD='123456a@A',
+MASTER_LOG_FILE='mysql-bin.000052',
+MASTER_LOG_POS=157;
